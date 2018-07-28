@@ -18,6 +18,12 @@ namespace ProcessEight\PipelineExample\Model;
 
 use League\Pipeline\Pipeline;
 
+/**
+ * Class MathPipeline
+ *
+ * An example of a re-usable pipeline which takes the number ten,
+ * multiplies it by two, adds one and returns the result
+ */
 class MathPipeline
 {
     /**
@@ -26,25 +32,42 @@ class MathPipeline
     protected $pipeline;
 
     /**
+     * @var TimesTwoStage
+     */
+    private $timesTwoStage;
+
+    /**
+     * @var AddOneStage
+     */
+    private $addOneStage;
+
+    /**
      * MathPipeline constructor.
      *
-     * @param Pipeline $pipeline
+     * @param Pipeline      $pipeline
+     * @param TimesTwoStage $timesTwoStage
+     * @param AddOneStage   $addOneStage
      */
-    public function __construct(Pipeline $pipeline)
-    {
+    public function __construct(
+        Pipeline $pipeline,
+        TimesTwoStage $timesTwoStage,
+        AddOneStage $addOneStage
+    ) {
         $this->pipeline = $pipeline;
+        $this->timesTwoStage = $timesTwoStage;
+        $this->addOneStage = $addOneStage;
     }
 
     /**
+     * Execute the pipeline
+     *
      * @return int
      */
-    public function run() : int
+    public function processPipeline() : int
     {
-        $pipeline = $this->pipeline;
-
-        $pipeline
-            ->pipe(new TimesTwoStage)
-            ->pipe(new AddOneStage)
+        $pipeline = $this->pipeline
+            ->pipe($this->timesTwoStage)
+            ->pipe($this->addOneStage)
         ;
 
         return $pipeline->process(10);

@@ -1,5 +1,4 @@
 <?php
-<?php
 /**
  * ProcessEight
  *
@@ -15,7 +14,9 @@
  *
  */
 
-use ProcessEight\PipelineExample\Model\MathPipeline;
+namespace ProcessEight\PipelineExample\Console\Command;
+
+use ProcessEight\PipelineExample\Model\PipelineExampleModel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
@@ -26,19 +27,19 @@ use Symfony\Component\Console\Command\Command;
 class PipelineExampleCommand extends Command
 {
     /**
-     * @var MathPipeline
+     * @var PipelineExampleModel
      */
-    protected $mathPipeline;
+    protected $pipelineExample;
 
     /**
      * PipelineExampleCommand constructor.
      *
-     * @param MathPipeline $mathPipeline
-     * @param string|null  $name
+     * @param PipelineExampleModel $pipelineExample
+     * @param string|null          $name
      */
-    public function __construct(MathPipeline $mathPipeline, string $name = null)
+    public function __construct(PipelineExampleModel $pipelineExample, string $name = null)
     {
-        $this->mathPipeline = $mathPipeline;
+        $this->pipelineExample = $pipelineExample;
 
         parent::__construct($name);
     }
@@ -58,7 +59,7 @@ class PipelineExampleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $processedPayload = $this->mathPipeline->run();
+        $processedPayload = $this->pipelineExample->run();
 
         $output->writeln('The result is (should be 21): ' . $processedPayload);
     }
